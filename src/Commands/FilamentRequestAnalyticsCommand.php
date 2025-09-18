@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Meshaon\FilamentRequestAnalytics\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentRequestAnalyticsCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-request-analytics';
 
     public $description = 'My command';
 
