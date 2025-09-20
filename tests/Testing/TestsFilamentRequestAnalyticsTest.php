@@ -14,8 +14,8 @@ class TestsFilamentRequestAnalyticsTest extends TestCase
     public function it_can_be_instantiated(): void
     {
         $this->expectNotToPerformAssertions();
-        
-        new TestsFilamentRequestAnalytics();
+
+        new TestsFilamentRequestAnalytics;
     }
 
     #[Test]

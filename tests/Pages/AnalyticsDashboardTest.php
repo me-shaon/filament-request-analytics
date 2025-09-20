@@ -15,7 +15,7 @@ class AnalyticsDashboardTest extends TestCase
     {
         // Test that the AnalyticsDashboard class from the external package exists
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             $this->assertTrue(class_exists($analyticsDashboardClass));
         } else {
@@ -28,7 +28,7 @@ class AnalyticsDashboardTest extends TestCase
     {
         // Test that the AnalyticsDashboard class extends Filament Page
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             $this->assertTrue(is_subclass_of($analyticsDashboardClass, Page::class));
         } else {
@@ -40,7 +40,7 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_has_correct_view(): void
     {
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             $view = $analyticsDashboardClass::getTestView();
             $this->assertEquals('analytics-dashboard', $view);
@@ -61,7 +61,7 @@ class AnalyticsDashboardTest extends TestCase
         ]);
 
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             // Boot the page to trigger configuration loading
             $analyticsDashboardClass::booted();
@@ -79,11 +79,11 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_title_method(): void
     {
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             config(['request-analytics.dashboard.page.title' => 'Custom Analytics Title']);
 
-            $page = new $analyticsDashboardClass();
+            $page = new $analyticsDashboardClass;
             $title = $page->getTitle();
 
             $this->assertEquals('Custom Analytics Title', $title);
@@ -96,7 +96,7 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_mount_method(): void
     {
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             // Mock request parameters
             request()->merge([
@@ -107,7 +107,7 @@ class AnalyticsDashboardTest extends TestCase
 
             config(['request-analytics.dashboard.defaults.request_category' => 'api']);
 
-            $page = new $analyticsDashboardClass();
+            $page = new $analyticsDashboardClass;
             $page->mount();
 
             $this->assertEquals('2024-01-01', $page->startDate);
@@ -122,7 +122,7 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_config_methods(): void
     {
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             config([
                 'request-analytics.dashboard.metrics' => [
@@ -150,7 +150,7 @@ class AnalyticsDashboardTest extends TestCase
                 ],
             ]);
 
-            $page = new $analyticsDashboardClass();
+            $page = new $analyticsDashboardClass;
 
             // Test getConfig method
             config(['request-analytics.dashboard.test_key' => 'test_value']);
@@ -202,7 +202,7 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_view_data_with_mock_service(): void
     {
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             // Mock the DashboardAnalyticsService
             $mockService = $this->createMock('MeShaon\RequestAnalytics\Services\DashboardAnalyticsService');
@@ -218,7 +218,7 @@ class AnalyticsDashboardTest extends TestCase
 
             config(['request-analytics.dashboard.defaults.date_range' => 30]);
 
-            $page = new $analyticsDashboardClass();
+            $page = new $analyticsDashboardClass;
             $result = $page->getViewData();
 
             $this->assertEquals(['data' => 'test'], $result);
@@ -231,12 +231,12 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_handles_empty_configuration(): void
     {
         $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
-        
+
         if (class_exists($analyticsDashboardClass)) {
             // Clear all configuration
             config(['request-analytics.dashboard' => []]);
 
-            $page = new $analyticsDashboardClass();
+            $page = new $analyticsDashboardClass;
 
             // These methods should not throw exceptions even with empty config
             $this->assertIsArray($page->getDashboardConfig());
