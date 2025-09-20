@@ -4,7 +4,7 @@ namespace Meshaon\FilamentRequestAnalytics;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard;
+use Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard;
 
 class FilamentRequestAnalyticsPlugin implements Plugin
 {

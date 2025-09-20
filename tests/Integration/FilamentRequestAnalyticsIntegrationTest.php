@@ -21,7 +21,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
         
         // Create and register the plugin
         $plugin = new FilamentRequestAnalyticsPlugin();
-        $plugin->register($panel);
+        $panel->plugin($plugin);
         
         // Verify the plugin is registered
         $this->assertTrue($panel->hasPlugin('filament-request-analytics'));
@@ -41,7 +41,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
         $pages = $panel->getPages();
         
         // Verify AnalyticsDashboard is registered
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         $this->assertContains($analyticsDashboardClass, $pages);
     }
 
@@ -74,7 +74,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
         $pages = $panel->getPages();
         
         // Verify we can instantiate the AnalyticsDashboard page
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         $this->assertContains($analyticsDashboardClass, $pages);
         
         if (class_exists($analyticsDashboardClass)) {
@@ -96,16 +96,16 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
             'request-analytics.dashboard.page.title' => 'Analytics Dashboard',
         ]);
 
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Boot the page to trigger configuration loading
             $analyticsDashboardClass::booted();
 
-            $this->assertEquals('heroicon-o-chart-bar', $analyticsDashboardClass::$navigationIcon);
-            $this->assertEquals('Analytics', $analyticsDashboardClass::$navigationLabel);
-            $this->assertEquals(100, $analyticsDashboardClass::$navigationSort);
-            $this->assertEquals('Analytics Dashboard', $analyticsDashboardClass::$title);
+            $this->assertEquals('heroicon-o-chart-bar', $analyticsDashboardClass::getTestNavigationIcon());
+            $this->assertEquals('Analytics', $analyticsDashboardClass::getTestNavigationLabel());
+            $this->assertEquals(100, $analyticsDashboardClass::getTestNavigationSort());
+            $this->assertEquals('Analytics Dashboard', $analyticsDashboardClass::getTestPageTitle());
         } else {
             $this->markTestSkipped('AnalyticsDashboard class not available - external dependency not installed');
         }
@@ -114,7 +114,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_get_dashboard_data_with_service(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Mock the DashboardAnalyticsService
@@ -164,7 +164,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_handle_different_date_ranges(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Mock the DashboardAnalyticsService
@@ -197,7 +197,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_get_enabled_metrics_from_config(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             config([
@@ -225,7 +225,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_get_enabled_sections_from_config(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             config([
@@ -257,7 +257,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_get_enabled_charts_from_config(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             config([
@@ -285,7 +285,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_get_request_categories_from_config(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             config([
@@ -313,7 +313,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_get_layout_configuration(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             config([
@@ -345,7 +345,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_handles_empty_configuration_gracefully(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Clear all configuration
@@ -368,7 +368,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_can_mount_with_request_parameters(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Mock request parameters
@@ -394,7 +394,7 @@ class FilamentRequestAnalyticsIntegrationTest extends TestCase
     #[Test]
     public function it_uses_default_values_when_request_parameters_are_missing(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Clear request parameters

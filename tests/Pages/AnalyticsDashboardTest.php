@@ -14,7 +14,7 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_class_exists(): void
     {
         // Test that the AnalyticsDashboard class from the external package exists
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             $this->assertTrue(class_exists($analyticsDashboardClass));
@@ -27,7 +27,7 @@ class AnalyticsDashboardTest extends TestCase
     public function it_can_test_analytics_dashboard_extends_page(): void
     {
         // Test that the AnalyticsDashboard class extends Filament Page
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             $this->assertTrue(is_subclass_of($analyticsDashboardClass, Page::class));
@@ -39,10 +39,10 @@ class AnalyticsDashboardTest extends TestCase
     #[Test]
     public function it_can_test_analytics_dashboard_has_correct_view(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
-            $view = $analyticsDashboardClass::$view;
+            $view = $analyticsDashboardClass::getTestView();
             $this->assertEquals('analytics-dashboard', $view);
         } else {
             $this->markTestSkipped('AnalyticsDashboard class not available - external dependency not installed');
@@ -60,16 +60,16 @@ class AnalyticsDashboardTest extends TestCase
             'request-analytics.dashboard.page.title' => 'Analytics Dashboard',
         ]);
 
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Boot the page to trigger configuration loading
             $analyticsDashboardClass::booted();
 
-            $this->assertEquals('heroicon-o-chart-bar', $analyticsDashboardClass::$navigationIcon);
-            $this->assertEquals('Analytics', $analyticsDashboardClass::$navigationLabel);
-            $this->assertEquals(100, $analyticsDashboardClass::$navigationSort);
-            $this->assertEquals('Analytics Dashboard', $analyticsDashboardClass::$title);
+            $this->assertEquals('heroicon-o-chart-bar', $analyticsDashboardClass::getTestNavigationIcon());
+            $this->assertEquals('Analytics', $analyticsDashboardClass::getTestNavigationLabel());
+            $this->assertEquals(100, $analyticsDashboardClass::getTestNavigationSort());
+            $this->assertEquals('Analytics Dashboard', $analyticsDashboardClass::getTestPageTitle());
         } else {
             $this->markTestSkipped('AnalyticsDashboard class not available - external dependency not installed');
         }
@@ -78,7 +78,7 @@ class AnalyticsDashboardTest extends TestCase
     #[Test]
     public function it_can_test_analytics_dashboard_title_method(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             config(['request-analytics.dashboard.page.title' => 'Custom Analytics Title']);
@@ -95,7 +95,7 @@ class AnalyticsDashboardTest extends TestCase
     #[Test]
     public function it_can_test_analytics_dashboard_mount_method(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Mock request parameters
@@ -121,7 +121,7 @@ class AnalyticsDashboardTest extends TestCase
     #[Test]
     public function it_can_test_analytics_dashboard_config_methods(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             config([
@@ -201,7 +201,7 @@ class AnalyticsDashboardTest extends TestCase
     #[Test]
     public function it_can_test_analytics_dashboard_view_data_with_mock_service(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Mock the DashboardAnalyticsService
@@ -230,7 +230,7 @@ class AnalyticsDashboardTest extends TestCase
     #[Test]
     public function it_can_test_analytics_dashboard_handles_empty_configuration(): void
     {
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             // Clear all configuration

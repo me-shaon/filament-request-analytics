@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MeShaon\RequestAnalytics\Filament\Pages;
+namespace Meshaon\FilamentRequestAnalytics\Pages;
 
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
@@ -131,5 +131,45 @@ class AnalyticsDashboard extends Page
         $charts = config('request-analytics.dashboard.charts', []);
 
         return array_filter($charts, fn ($chart) => $chart['enabled'] ?? true);
+    }
+
+    /**
+     * Get navigation icon for testing
+     */
+    public static function getTestNavigationIcon(): ?string
+    {
+        return static::$navigationIcon;
+    }
+
+    /**
+     * Get navigation label for testing
+     */
+    public static function getTestNavigationLabel(): ?string
+    {
+        return static::$navigationLabel;
+    }
+
+    /**
+     * Get navigation sort for testing
+     */
+    public static function getTestNavigationSort(): ?int
+    {
+        return static::$navigationSort;
+    }
+
+    /**
+     * Get view for testing
+     */
+    public static function getTestView(): string
+    {
+        return static::$view;
+    }
+
+    /**
+     * Get title for testing
+     */
+    public static function getTestPageTitle(): ?string
+    {
+        return static::$title;
     }
 }

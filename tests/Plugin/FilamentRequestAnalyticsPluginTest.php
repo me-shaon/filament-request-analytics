@@ -38,7 +38,7 @@ class FilamentRequestAnalyticsPluginTest extends TestCase
         $panel = $this->createMock(Panel::class);
         
         // Expect the panel to receive the AnalyticsDashboard page
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         $panel->expects($this->once())
             ->method('pages')
             ->with([$analyticsDashboardClass]);
@@ -94,7 +94,7 @@ class FilamentRequestAnalyticsPluginTest extends TestCase
         $plugin = new FilamentRequestAnalyticsPlugin();
         
         // Verify that the AnalyticsDashboard class exists and is the correct one
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             $this->assertTrue(class_exists($analyticsDashboardClass));
@@ -123,7 +123,7 @@ class FilamentRequestAnalyticsPluginTest extends TestCase
         
         // We can't easily test the internal behavior without complex mocking,
         // but we can verify the class exists and is correct
-        $analyticsDashboardClass = 'MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard';
+        $analyticsDashboardClass = 'Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard';
         
         if (class_exists($analyticsDashboardClass)) {
             $this->assertTrue(class_exists($analyticsDashboardClass));
