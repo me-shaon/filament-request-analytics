@@ -3,7 +3,7 @@
     <div class="mb-6">
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div class="flex-1">
-                <p class="text-sm text-gray-500 dark:text-gray-400">Track your website performance and user insights</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $this->getConfig('page.description', 'Track your website performance and user insights') }}</p>
             </div>
             <div class="flex-shrink-0">
                 <form method="GET" action="{{ request()->url() }}" class="flex items-center gap-3">
@@ -13,9 +13,9 @@
                         :endDate="request('end_date')"
                     />
                     <select name="request_category" class="block w-auto min-w-[140px] rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-primary-500 focus:ring-primary-500">
-                        <option value="" {{ !request('request_category') ? 'selected' : '' }}>All Requests</option>
-                        <option value="web" {{ request('request_category') == 'web' ? 'selected' : '' }}>Web Only</option>
-                        <option value="api" {{ request('request_category') == 'api' ? 'selected' : '' }}>API Only</option>
+                        @foreach($this->getRequestCategories() as $value => $label)
+                            <option value="{{ $value }}" {{ request('request_category') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
                     </select>
                     <x-filament::button type="submit" size="sm">
                         Apply Filters
@@ -25,65 +25,106 @@
         </div>
     </div>
 
-    <!-- Key Metrics Cards - Force 4 Column Grid -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
-        @php
-            $metricsCards = [
-                ['label' => 'Views', 'value' => $average['views']],
-                ['label' => 'Visitors', 'value' => $average['visitors']],
-                ['label' => 'Bounce Rate', 'value' => $average['bounce_rate']],
-                ['label' => 'Average Visit Time', 'value' => $average['average_visit_time']]
-            ];
-        @endphp
-        
-        @foreach($metricsCards as $card)
-            <x-filament::section class="text-center">
-                <x-request-analytics::stats.count label="{{ $card['label'] }}" :value="$card['value']"/>
-            </x-filament::section>
+    <!-- Key Metrics Cards - Configurable Grid -->
+    @php
+        $metricsGridColumns = $this->getConfig('layout.metrics_grid_columns', 4);
+        $enabledMetrics = $this->getEnabledMetrics();
+    @endphp
+    
+    @if(count($enabledMetrics) > 0)
+    <div style="display: grid; grid-template-columns: repeat({{ $metricsGridColumns }}, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
+        @foreach($enabledMetrics as $key => $metric)
+            @if(isset($average[$key]))
+                <x-filament::section class="text-center">
+                    <x-request-analytics::stats.count label="{{ $metric['label'] }}" :value="$average[$key]"/>
+                </x-filament::section>
+            @endif
         @endforeach
     </div>
+    @endif
 
     <!-- Chart Section -->
-    <div class="mb-6">
-        <x-filament::section>
-            <x-slot name="heading">
-                Traffic Overview
-            </x-slot>
-            <x-slot name="description">
-                Daily visitor and page view trends
-            </x-slot>
-            
-            <div class="mt-6">
-                <x-request-analytics::stats.chart :labels='$labels' :datasets='$datasets' type="line"/>
+    @php
+        $chartsConfig = $this->getChartsConfig();
+    @endphp
+    
+    @foreach($chartsConfig as $chartKey => $chartConfig)
+        @if($chartKey === 'traffic_overview')
+            <div class="mb-6">
+                <x-filament::section>
+                    <x-slot name="heading">
+                        {{ $chartConfig['title'] ?? 'Traffic Overview' }}
+                    </x-slot>
+                    <x-slot name="description">
+                        {{ $chartConfig['description'] ?? 'Daily visitor and page view trends' }}
+                    </x-slot>
+                    
+                    <div class="mt-6">
+                        <x-request-analytics::stats.chart :labels='$labels' :datasets='$datasets' type="{{ $chartConfig['type'] ?? 'line' }}"/>
+                    </div>
+                </x-filament::section>
             </div>
-        </x-filament::section>
-    </div>
+        @endif
+    @endforeach
 
-    <!-- Pages and Referrers - Force 2 Column Grid -->
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
-        <x-filament::section>
-            <x-request-analytics::analytics.pages :pages='$pages'/>
-        </x-filament::section>
-        <x-filament::section>
-            <x-request-analytics::analytics.referrers :referrers='$referrers'/>
-        </x-filament::section>
+    <!-- Pages and Referrers - Configurable Grid -->
+    @php
+        $chartsGridColumns = $this->getConfig('layout.charts_grid_columns', 2);
+        $enabledSections = $this->getEnabledSections();
+        $topSections = array_filter($enabledSections, fn($key) => in_array($key, ['pages', 'referrers']), ARRAY_FILTER_USE_KEY);
+    @endphp
+    
+    @if(count($topSections) > 0)
+    <div style="display: grid; grid-template-columns: repeat({{ $chartsGridColumns }}, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
+        @if(isset($enabledSections['pages']) && isset($pages))
+            <x-filament::section>
+                <x-slot name="heading">{{ $enabledSections['pages']['title'] ?? 'Top Pages' }}</x-slot>
+                <x-request-analytics::analytics.pages :pages='$pages'/>
+            </x-filament::section>
+        @endif
+        @if(isset($enabledSections['referrers']) && isset($referrers))
+            <x-filament::section>
+                <x-slot name="heading">{{ $enabledSections['referrers']['title'] ?? 'Top Referrers' }}</x-slot>
+                <x-request-analytics::analytics.referrers :referrers='$referrers'/>
+            </x-filament::section>
+        @endif
     </div>
+    @endif
 
-    <!-- Browsers, OS, Devices, Countries - Force 2 Column Grid -->
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-        <x-filament::section>
-            <x-request-analytics::analytics.broswers :browsers='$browsers'/>
-        </x-filament::section>
-        <x-filament::section>
-            <x-request-analytics::analytics.operating-systems :operatingSystems='$operatingSystems'/>
-        </x-filament::section>
-        <x-filament::section>
-            <x-request-analytics::analytics.devices :devices='$devices'/>
-        </x-filament::section>
-        <x-filament::section>
-            <x-request-analytics::analytics.countries :countries='$countries'/>
-        </x-filament::section>
+    <!-- Browsers, OS, Devices, Countries - Configurable Grid -->
+    @php
+        $analyticsGridColumns = $this->getConfig('layout.analytics_grid_columns', 2);
+        $bottomSections = array_filter($enabledSections, fn($key) => in_array($key, ['browsers', 'operating_systems', 'devices', 'countries']), ARRAY_FILTER_USE_KEY);
+    @endphp
+    
+    @if(count($bottomSections) > 0)
+    <div style="display: grid; grid-template-columns: repeat({{ $analyticsGridColumns }}, 1fr); gap: 1.5rem;">
+        @if(isset($enabledSections['browsers']) && isset($browsers))
+            <x-filament::section>
+                <x-slot name="heading">{{ $enabledSections['browsers']['title'] ?? 'Browser Analytics' }}</x-slot>
+                <x-request-analytics::analytics.broswers :browsers='$browsers'/>
+            </x-filament::section>
+        @endif
+        @if(isset($enabledSections['operating_systems']) && isset($operatingSystems))
+            <x-filament::section>
+                <x-slot name="heading">{{ $enabledSections['operating_systems']['title'] ?? 'Operating Systems' }}</x-slot>
+                <x-request-analytics::analytics.operating-systems :operatingSystems='$operatingSystems'/>
+            </x-filament::section>
+        @endif
+        @if(isset($enabledSections['devices']) && isset($devices))
+            <x-filament::section>
+                <x-slot name="heading">{{ $enabledSections['devices']['title'] ?? 'Device Analytics' }}</x-slot>
+                <x-request-analytics::analytics.devices :devices='$devices'/>
+            </x-filament::section>
+        @endif
+        @if(isset($enabledSections['countries']) && isset($countries))
+            <x-filament::section>
+                <x-slot name="heading">{{ $enabledSections['countries']['title'] ?? 'Country Analytics' }}</x-slot>
+                <x-request-analytics::analytics.countries :countries='$countries'/>
+            </x-filament::section>
+        @endif
     </div>
+    @endif
     <!-- Ensure calendar Apply button uses Filament primary colors -->
     <style>
         /* Style calendar Apply button with Filament primary colors */
