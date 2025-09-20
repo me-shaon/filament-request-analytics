@@ -2,8 +2,8 @@
 
 namespace Meshaon\FilamentRequestAnalytics;
 
-use Filament\Panel;
 use Filament\Contracts\Plugin;
+use Filament\Panel;
 use MeShaon\RequestAnalytics\Filament\Pages\AnalyticsDashboard;
 
 class FilamentRequestAnalyticsPlugin implements Plugin

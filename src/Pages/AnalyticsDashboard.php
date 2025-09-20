@@ -21,8 +21,11 @@ class AnalyticsDashboard extends Page
     protected static ?int $navigationSort;
 
     public array $dateRange = [];
+
     public string $requestCategory = '';
+
     public string $startDate = '';
+
     public string $endDate = '';
 
     public static function booted(): void
@@ -33,7 +36,7 @@ class AnalyticsDashboard extends Page
         static::$title = config('request-analytics.dashboard.page.title');
     }
 
-    public function getTitle(): string|Htmlable
+    public function getTitle(): string | Htmlable
     {
         return config('request-analytics.dashboard.page.title');
     }
@@ -41,10 +44,10 @@ class AnalyticsDashboard extends Page
     public function getViewData(): array
     {
         $dashboardService = app(DashboardAnalyticsService::class);
-        
+
         $params = [];
-        
-        if (!empty($this->startDate) && !empty($this->endDate)) {
+
+        if (! empty($this->startDate) && ! empty($this->endDate)) {
             $params['start_date'] = $this->startDate;
             $params['end_date'] = $this->endDate;
         } else {
@@ -55,9 +58,9 @@ class AnalyticsDashboard extends Page
                 : $defaultDateRange;
             $params['date_range'] = $dateRange;
         }
-        
-        $params['request_category'] = !empty($this->requestCategory) ? $this->requestCategory : null;
-        
+
+        $params['request_category'] = ! empty($this->requestCategory) ? $this->requestCategory : null;
+
         return $dashboardService->getDashboardData($params);
     }
 
@@ -90,7 +93,8 @@ class AnalyticsDashboard extends Page
     public function getEnabledMetrics(): array
     {
         $metrics = config('request-analytics.dashboard.metrics', []);
-        return array_filter($metrics, fn($metric) => $metric['enabled'] ?? true);
+
+        return array_filter($metrics, fn ($metric) => $metric['enabled'] ?? true);
     }
 
     /**
@@ -99,7 +103,8 @@ class AnalyticsDashboard extends Page
     public function getEnabledSections(): array
     {
         $sections = config('request-analytics.dashboard.sections', []);
-        return array_filter($sections, fn($section) => $section['enabled'] ?? true);
+
+        return array_filter($sections, fn ($section) => $section['enabled'] ?? true);
     }
 
     /**
@@ -124,6 +129,7 @@ class AnalyticsDashboard extends Page
     public function getChartsConfig(): array
     {
         $charts = config('request-analytics.dashboard.charts', []);
-        return array_filter($charts, fn($chart) => $chart['enabled'] ?? true);
+
+        return array_filter($charts, fn ($chart) => $chart['enabled'] ?? true);
     }
 }
