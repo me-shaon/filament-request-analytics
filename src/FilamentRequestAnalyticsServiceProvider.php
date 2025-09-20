@@ -10,7 +10,6 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
-use Meshaon\FilamentRequestAnalytics\Commands\FilamentRequestAnalyticsCommand;
 use Meshaon\FilamentRequestAnalytics\Testing\TestsFilamentRequestAnalytics;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -30,7 +29,6 @@ class FilamentRequestAnalyticsServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package->name(static::$name)
-            ->hasCommands($this->getCommands())
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
@@ -106,15 +104,6 @@ class FilamentRequestAnalyticsServiceProvider extends PackageServiceProvider
         ];
     }
 
-    /**
-     * @return array<class-string>
-     */
-    protected function getCommands(): array
-    {
-        return [
-            FilamentRequestAnalyticsCommand::class,
-        ];
-    }
 
     /**
      * @return array<string>
