@@ -10,11 +10,10 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
+use Meshaon\FilamentRequestAnalytics\Testing\TestsFilamentRequestAnalytics;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Meshaon\FilamentRequestAnalytics\Commands\FilamentRequestAnalyticsCommand;
-use Meshaon\FilamentRequestAnalytics\Testing\TestsFilamentRequestAnalytics;
 
 class FilamentRequestAnalyticsServiceProvider extends PackageServiceProvider
 {
@@ -30,7 +29,6 @@ class FilamentRequestAnalyticsServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package->name(static::$name)
-            ->hasCommands($this->getCommands())
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
@@ -103,16 +101,6 @@ class FilamentRequestAnalyticsServiceProvider extends PackageServiceProvider
             // AlpineComponent::make('filament-request-analytics', __DIR__ . '/../resources/dist/components/filament-request-analytics.js'),
             Css::make('filament-request-analytics-styles', __DIR__ . '/../resources/dist/filament-request-analytics.css'),
             Js::make('filament-request-analytics-scripts', __DIR__ . '/../resources/dist/filament-request-analytics.js'),
-        ];
-    }
-
-    /**
-     * @return array<class-string>
-     */
-    protected function getCommands(): array
-    {
-        return [
-            FilamentRequestAnalyticsCommand::class,
         ];
     }
 

@@ -4,6 +4,7 @@ namespace Meshaon\FilamentRequestAnalytics;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Meshaon\FilamentRequestAnalytics\Pages\AnalyticsDashboard;
 
 class FilamentRequestAnalyticsPlugin implements Plugin
 {
@@ -14,7 +15,9 @@ class FilamentRequestAnalyticsPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel->pages([
+            AnalyticsDashboard::class,
+        ]);
     }
 
     public function boot(Panel $panel): void
